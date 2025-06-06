@@ -24,3 +24,67 @@
     - Data storage using suitable structures (e.g., List or Dictionary)
 - Provide a smooth user experience for basic inventory tasks.
 
+## Design Outline
+
+```
++----------------------------------------------------+
+|            Inventory Management System             |
++----------------------------------------------------+
+|                   Main Menu                        |
+| 1. Add Product                                     |
+| 2. Update Stock                                    |
+| 3. View Products                                   |
+| 4. Remove Product                                  |
+| 5. Exit                                            |
++----------------------------------------------------+
+                  |
+                  v
+        +-----------------------+
+        |  User selects option  |
+        +-----------------------+
+                  |
+    +------------------------------+------------------------------+-----------------------------+---------------------------+
+    |                              |                              |                             |                           |
+    v                              v                              v                             v                           v
++-----------------+       +---------------------+        +---------------------+       +-------------------+        +----------+
+|  Add Product    |       |   Update Stock      |        |    View Products    |       |  Remove Product   |        |  Exit    |
++-----------------+       +---------------------+        +---------------------+       +-------------------+        +----------+
+| Enter Name      |       | List Products       |        | List all products   |       | List Products     |        | Program  |
+| Enter Price     |       | Select Product      |        | (Name, Price, Qty)  |       | Select Product    |        | ends     |
+| Enter Quantity  |       | Add/Subtract Qty    |        |                     |       | Confirm Remove    |        +----------+
+| Confirm Add     |       | Confirm Update      |        |                     |       | Confirmed         |
++-----------------+       +---------------------+        +---------------------+       +-------------------+
+    |                              |                              |                             |
+    +------------------------------+------------------------------+-----------------------------+
+                  |
+                  v
+        +-----------------------+
+        |   Return to Menu      |
+        +-----------------------+
+```
+
+### Description of Flow
+
+1. Main Menu
+    - User is repeatedly presented with options to add, update, view, remove products, or exit.
+
+2. Add Product
+    - User inputs product name, price, and quantity.
+    - Product is added to inventory.
+
+3. Update Stock
+    - User selects a product from the list.
+    - User enters a positive (restock) or negative (sale) quantity.
+    - Product stock is updated accordingly.
+
+4. View Products
+    - User sees a list of all products with name, price, and stock quantity.
+
+5. Remove Product
+    - User selects a product from the list.
+    - Product is removed from inventory after confirmation.
+
+6. Exit
+    - Application ends.
+
+All actions (except exit) loop back to the main menu, allowing continuous interaction.
