@@ -46,6 +46,7 @@ Create a C# console application that manages a small library of books. The progr
 ## Used Software/Service(s)
 - Git
 - GitHub Desktop
+- GitHub Copilot
 - Visual Studio Code
 - .NET
 
