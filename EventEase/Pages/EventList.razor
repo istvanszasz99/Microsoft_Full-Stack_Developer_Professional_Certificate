@@ -1,0 +1,28 @@
+@page "/events"
+
+@* Event List Page *@
+
+<h2>Upcoming Events</h2>
+
+@foreach (var evt in Events)
+{
+    <a href="/eventdetails/@evt.Name" style="text-decoration:none;color:inherit;">
+        <EventCard EventName="@evt.Name" EventDate="@evt.Date" EventLocation="@evt.Location" />
+    </a>
+}
+
+@code {
+    public class EventModel
+    {
+        public string Name { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+    }
+
+    private List<EventModel> Events = new List<EventModel>
+    {
+        new EventModel { Name = "Corporate Gala", Date = DateTime.Now.AddDays(10), Location = "Grand Hall" },
+        new EventModel { Name = "Tech Conference", Date = DateTime.Now.AddDays(20), Location = "Convention Center" },
+        new EventModel { Name = "Holiday Party", Date = DateTime.Now.AddDays(30), Location = "Downtown Venue" }
+    };
+}

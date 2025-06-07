@@ -1,0 +1,42 @@
+@page "/eventdetails/{EventName}"
+
+@* Event Details Page *@
+
+<h2>Event Details</h2>
+<p><strong>Name:</strong> @EventName</p>
+<p><strong>Date:</strong> @EventDate.ToShortDateString()</p>
+<p><strong>Location:</strong> @EventLocation</p>
+
+<a href="/register/@EventName">Register for this event</a>
+
+@code {
+    [Parameter]
+    public string? EventName { get; set; }
+    public DateTime EventDate { get; set; }
+    public string? EventLocation { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // Mock event data for demonstration
+        if (EventName == "Corporate Gala")
+        {
+            EventDate = DateTime.Now.AddDays(10);
+            EventLocation = "Grand Hall";
+        }
+        else if (EventName == "Tech Conference")
+        {
+            EventDate = DateTime.Now.AddDays(20);
+            EventLocation = "Convention Center";
+        }
+        else if (EventName == "Holiday Party")
+        {
+            EventDate = DateTime.Now.AddDays(30);
+            EventLocation = "Downtown Venue";
+        }
+        else
+        {
+            EventDate = DateTime.Now;
+            EventLocation = "TBD";
+        }
+    }
+}
