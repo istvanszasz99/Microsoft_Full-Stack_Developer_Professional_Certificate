@@ -4,25 +4,55 @@
 
 <h2>Upcoming Events</h2>
 
-@foreach (var evt in Events)
+@if (Events.Count == 0)
 {
-    <a href="/eventdetails/@evt.Name" style="text-decoration:none;color:inherit;">
-        <EventCard EventName="@evt.Name" EventDate="@evt.Date" EventLocation="@evt.Location" />
-    </a>
+    <div class="alert alert-info">No events available.</div>
+}
+else
+{
+    @foreach (var evt in Events)
+    {
+        <a href="/eventdetails/@evt.Name" style="text-decoration:none;color:inherit;">
+            <EventCard EventName="@evt.Name" EventDate="@evt.Date" EventLocation="@evt.Location" />
+        </a>
+    }
 }
 
 @code {
     public class EventModel
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public DateTime Date { get; set; }
-        public string Location { get; set; }
+        public string? Location { get; set; }
     }
 
-    private List<EventModel> Events = new List<EventModel>
+    private List<EventModel> Events = new List<EventModel>();
+
+    protected override void OnInitialized()
     {
-        new EventModel { Name = "Corporate Gala", Date = DateTime.Now.AddDays(10), Location = "Grand Hall" },
-        new EventModel { Name = "Tech Conference", Date = DateTime.Now.AddDays(20), Location = "Convention Center" },
-        new EventModel { Name = "Holiday Party", Date = DateTime.Now.AddDays(30), Location = "Downtown Venue" }
-    };
+        // 20 meaningful events
+        Events = new List<EventModel>
+        {
+            new EventModel { Name = "Corporate Gala", Date = DateTime.Now.AddDays(10), Location = "Grand Hall" },
+            new EventModel { Name = "Tech Conference", Date = DateTime.Now.AddDays(20), Location = "Convention Center" },
+            new EventModel { Name = "Holiday Party", Date = DateTime.Now.AddDays(30), Location = "Downtown Venue" },
+            new EventModel { Name = "Startup Pitch Night", Date = DateTime.Now.AddDays(5), Location = "Innovation Hub" },
+            new EventModel { Name = "Marketing Summit", Date = DateTime.Now.AddDays(12), Location = "Skyline Center" },
+            new EventModel { Name = "Leadership Workshop", Date = DateTime.Now.AddDays(15), Location = "Executive Hall" },
+            new EventModel { Name = "Annual Fundraiser", Date = DateTime.Now.AddDays(18), Location = "Charity Ballroom" },
+            new EventModel { Name = "Networking Mixer", Date = DateTime.Now.AddDays(22), Location = "City Rooftop" },
+            new EventModel { Name = "Product Launch", Date = DateTime.Now.AddDays(25), Location = "Tech Park" },
+            new EventModel { Name = "Team Building Retreat", Date = DateTime.Now.AddDays(28), Location = "Lakeside Resort" },
+            new EventModel { Name = "Customer Appreciation Day", Date = DateTime.Now.AddDays(32), Location = "Main Plaza" },
+            new EventModel { Name = "Board Meeting", Date = DateTime.Now.AddDays(35), Location = "Conference Room A" },
+            new EventModel { Name = "Sales Kickoff", Date = DateTime.Now.AddDays(38), Location = "Downtown Office" },
+            new EventModel { Name = "Charity Auction", Date = DateTime.Now.AddDays(40), Location = "Art Gallery" },
+            new EventModel { Name = "Developer Bootcamp", Date = DateTime.Now.AddDays(42), Location = "Code Lab" },
+            new EventModel { Name = "HR Seminar", Date = DateTime.Now.AddDays(45), Location = "Training Center" },
+            new EventModel { Name = "Finance Forum", Date = DateTime.Now.AddDays(48), Location = "Business Suite" },
+            new EventModel { Name = "Wellness Fair", Date = DateTime.Now.AddDays(50), Location = "Community Hall" },
+            new EventModel { Name = "Vendor Expo", Date = DateTime.Now.AddDays(53), Location = "Exhibition Center" },
+            new EventModel { Name = "End of Year Celebration", Date = DateTime.Now.AddDays(60), Location = "Banquet Hall" }
+        };
+    }
 }

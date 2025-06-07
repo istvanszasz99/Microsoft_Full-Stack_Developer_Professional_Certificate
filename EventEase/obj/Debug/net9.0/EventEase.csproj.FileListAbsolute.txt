@@ -6,8 +6,6 @@ C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\dotnet.native.9msu8ucn2h.wasm
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\dotnet.runtime.qrl1fuqt3c.js
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\dotnet.runtime.js.map
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.j2p305h3q9.pdb
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.b26ghimd5h.wasm
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\icudt_CJK.tjcz0u77k5.dat
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\icudt_EFIGS.tptq2av103.dat
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\icudt_no_CJK.lfu7j35m59.dat
@@ -292,7 +290,6 @@ C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Threading.Tasks.Extensions.bz6v4y1bgr.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Runtime.Serialization.Formatters.8lhd6xdb7k.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Net.WebProxy.zg8yqia6rm.wasm.gz
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.b26ghimd5h.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Data.Common.i3ihuk6o50.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Xml.XDocument.b3qpy0ywdq.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Runtime.Serialization.Json.z0nxu35yve.wasm.gz
@@ -329,7 +326,6 @@ C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.ComponentModel.EventBasedAsync.6j6cjcru2p.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\dotnet.native.1p93gcv9fh.js.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\icudt_EFIGS.tptq2av103.dat.gz
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.j2p305h3q9.pdb.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Diagnostics.TextWriterTraceListener.y0i2x9wcx8.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.Net.HttpListener.o3q2lkyykw.wasm.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\System.ServiceModel.Web.64psc55341.wasm.gz
@@ -1065,9 +1061,6 @@ C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\75trfcm43w-tjcz0u77k5.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\lfiq0gid4h-tptq2av103.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\y62acmnqwm-lfu7j35m59.gz
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\gqx5ofl3a7-b26ghimd5h.gz
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\lw84d9mf51-j2p305h3q9.gz
-C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\pqrel3z3dc-qz4wztpjco.gz
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\staticwebassets.build.endpoints.json
@@ -1082,3 +1075,10 @@ C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\refint\EventEase.dll
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\EventEase.pdb
 C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\ref\EventEase.dll
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.ewxaz06z2o.pdb
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.er7dhmzyx8.wasm
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.er7dhmzyx8.wasm.gz
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\bin\Debug\net9.0\wwwroot\_framework\EventEase.ewxaz06z2o.pdb.gz
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\gqx5ofl3a7-er7dhmzyx8.gz
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\lw84d9mf51-ewxaz06z2o.gz
+C:\Users\istvanszasz99\Desktop\Microsoft_Blazor_for_Front-End_Development_Course_Module_Final_Project\EventEase\obj\Debug\net9.0\compressed\pqrel3z3dc-8r6w2m6l6x.gz
