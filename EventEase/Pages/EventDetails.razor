@@ -2,12 +2,33 @@
 
 @* Event Details Page *@
 
+@inject EventEase.Services.UserSessionService UserSession
+@inject EventEase.Services.AttendanceService AttendanceService
+
 <h2>Event Details</h2>
 <p><strong>Name:</strong> @EventName</p>
 <p><strong>Date:</strong> @EventDate.ToShortDateString()</p>
 <p><strong>Location:</strong> @EventLocation</p>
 
 <a href="/register/@EventName">Register for this event</a>
+
+@if (UserSession.IsLoggedIn)
+{
+    <button class="btn btn-success mt-2" @onclick="MarkAttendance" disabled="@AttendanceService.HasAttended(EventName ?? string.Empty, UserSession.UserEmail ?? string.Empty)">
+        @(AttendanceService.HasAttended(EventName ?? string.Empty, UserSession.UserEmail ?? string.Empty) ? "Attendance Marked" : "Mark Attendance")
+    </button>
+}
+
+@if (UserSession.IsLoggedIn)
+{
+    <h4 class="mt-4">Attendees:</h4>
+    <ul>
+        @foreach (var attendee in AttendanceService.GetAttendees(EventName ?? string.Empty))
+        {
+            <li>@attendee</li>
+        }
+    </ul>
+}
 
 @code {
     [Parameter]
@@ -122,6 +143,14 @@
         {
             EventDate = DateTime.Now;
             EventLocation = "TBD";
+        }
+    }
+
+    private void MarkAttendance()
+    {
+        if (UserSession.IsLoggedIn && EventName != null && UserSession.UserEmail != null)
+        {
+            AttendanceService.MarkAttendance(EventName, UserSession.UserEmail);
         }
     }
 }
