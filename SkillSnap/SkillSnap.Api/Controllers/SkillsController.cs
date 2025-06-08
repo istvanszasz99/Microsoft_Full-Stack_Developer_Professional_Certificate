@@ -1,49 +1,77 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SkillSnap.Api.Models;
+using System.Security.Claims;
 
 namespace SkillSnap.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SkillsController : ControllerBase
+    [Authorize]    public class SkillsController : ControllerBase
     {
         private readonly SkillSnapContext _context;
+        private readonly IMemoryCache _cache;
+        private const string SKILLS_CACHE_KEY = "all_skills";
+        private readonly TimeSpan _cacheExpiration = TimeSpan.FromMinutes(10);
 
-        public SkillsController(SkillSnapContext context)
+        public SkillsController(SkillSnapContext context, IMemoryCache cache)
         {
             _context = context;
-        }
-
-        [HttpGet]
+            _cache = cache;
+        }        [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Skill>>> GetSkills()
         {
-            return await _context.Skills.ToListAsync();
-        }
+            // Try to get from cache first
+            if (_cache.TryGetValue(SKILLS_CACHE_KEY, out List<Skill>? cachedSkills))
+            {
+                return cachedSkills!;
+            }            // If not in cache, get from database with optimized query
+            var skills = await _context.Skills
+                .AsNoTracking() // Performance optimization for read-only queries
+                .OrderBy(s => s.Name) // Add consistent ordering by name
+                .ToListAsync();            // Store in cache
+            _cache.Set(SKILLS_CACHE_KEY, skills, _cacheExpiration);
 
-        [HttpGet("{id}")]
+            return Ok(skills);
+        }        [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Skill>> GetSkill(int id)
         {
-            var skill = await _context.Skills.FindAsync(id);
+            // Cache individual skills by ID
+            string cacheKey = $"skill_{id}";
+            
+            if (_cache.TryGetValue(cacheKey, out Skill? cachedSkill))
+            {
+                return cachedSkill!;
+            }
+
+            var skill = await _context.Skills
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (skill == null)
             {
                 return NotFound();
             }
 
-            return skill;
-        }
+            // Cache the individual skill
+            _cache.Set(cacheKey, skill, _cacheExpiration);
 
-        [HttpPost]
+            return skill;
+        }        [HttpPost]
         public async Task<ActionResult<Skill>> AddSkill(Skill skill)
         {
             _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
-        }
+            // Invalidate cache when data changes
+            _cache.Remove(SKILLS_CACHE_KEY);
 
-        [HttpPut("{id}")]
+            return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
+        }        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSkill(int id, Skill skill)
         {
             if (id != skill.Id)
@@ -56,6 +84,10 @@ namespace SkillSnap.Api.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                
+                // Invalidate cache when data changes
+                _cache.Remove(SKILLS_CACHE_KEY);
+                _cache.Remove($"skill_{id}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,9 +102,7 @@ namespace SkillSnap.Api.Controllers
             }
 
             return NoContent();
-        }
-
-        [HttpDelete("{id}")]
+        }        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSkill(int id)
         {
             var skill = await _context.Skills.FindAsync(id);
@@ -83,6 +113,10 @@ namespace SkillSnap.Api.Controllers
 
             _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
+
+            // Invalidate cache when data changes
+            _cache.Remove(SKILLS_CACHE_KEY);
+            _cache.Remove($"skill_{id}");
 
             return NoContent();
         }

@@ -6,7 +6,7 @@ namespace SkillSnap.Client.Services
     public class SkillService
     {
         private readonly HttpClient _httpClient;
-        private const string ApiBaseUrl = "http://localhost:5095/api/skills";
+        private const string ApiBaseUrl = "api/skills";
 
         public SkillService(HttpClient httpClient)
         {
