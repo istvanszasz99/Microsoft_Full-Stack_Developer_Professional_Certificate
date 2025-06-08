@@ -1,7 +1,50 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>SkillSnap - Portfolio Tracker</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero-section text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary">Welcome to SkillSnap</h1>
+    <p class="lead">Your personal portfolio and project tracker</p>
+</div>
 
-Welcome to your new app.
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Profile Overview</h4>
+            </div>
+            <div class="card-body">
+                <ProfileCard />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h4>Featured Projects</h4>
+            </div>
+            <div class="card-body">
+                <p>Showcase your best work and track your development journey.</p>
+                <a href="/projects" class="btn btn-primary">View All Projects</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h4>Skills & Technologies</h4>
+            </div>
+            <div class="card-body">
+                <p>Track your expertise across different technologies and frameworks.</p>
+                <a href="/skills" class="btn btn-primary">View All Skills</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+}
