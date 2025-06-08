@@ -21,36 +21,47 @@ namespace SkillSnap.Api.Controllers
             _context = context;
             _cache = cache;
         }        [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Skill>>> GetSkills()
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            var cacheKey = $"{SKILLS_CACHE_KEY}_{userId}";
+            
             // Try to get from cache first
-            if (_cache.TryGetValue(SKILLS_CACHE_KEY, out List<Skill>? cachedSkills))
+            if (_cache.TryGetValue(cacheKey, out List<Skill>? cachedSkills))
             {
                 return cachedSkills!;
-            }            // If not in cache, get from database with optimized query
+            }            // If not in cache, get from database with optimized query (filter by user)
             var skills = await _context.Skills
                 .AsNoTracking() // Performance optimization for read-only queries
+                .Where(s => s.PortfolioUserId == userId) // Filter by current user
                 .OrderBy(s => s.Name) // Add consistent ordering by name
                 .ToListAsync();            // Store in cache
-            _cache.Set(SKILLS_CACHE_KEY, skills, _cacheExpiration);
+            _cache.Set(cacheKey, skills, _cacheExpiration);
 
             return Ok(skills);
         }        [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Skill>> GetSkill(int id)
         {
-            // Cache individual skills by ID
-            string cacheKey = $"skill_{id}";
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            // Cache individual skills by ID and user
+            string cacheKey = $"skill_{id}_{userId}";
             
             if (_cache.TryGetValue(cacheKey, out Skill? cachedSkill))
             {
                 return cachedSkill!;
-            }
-
-            var skill = await _context.Skills
+            }            var skill = await _context.Skills
                 .AsNoTracking()
-                .FirstOrDefaultAsync(s => s.Id == id);
+                .FirstOrDefaultAsync(s => s.Id == id && s.PortfolioUserId == userId);
 
             if (skill == null)
             {
@@ -64,30 +75,50 @@ namespace SkillSnap.Api.Controllers
         }        [HttpPost]
         public async Task<ActionResult<Skill>> AddSkill(Skill skill)
         {
-            _context.Skills.Add(skill);
-            await _context.SaveChangesAsync();
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
 
-            // Invalidate cache when data changes
-            _cache.Remove(SKILLS_CACHE_KEY);
+            skill.PortfolioUserId = userId; // Ensure the skill belongs to the current user
+            
+            _context.Skills.Add(skill);
+            await _context.SaveChangesAsync();            // Invalidate cache when data changes
+            InvalidateUserCache(userId);
 
             return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
         }        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSkill(int id, Skill skill)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             if (id != skill.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(skill).State = EntityState.Modified;
+            // Ensure the skill belongs to the current user
+            var existingSkill = await _context.Skills.FindAsync(id);
+            if (existingSkill == null || existingSkill.PortfolioUserId != userId)
+            {
+                return NotFound();
+            }
+
+            skill.PortfolioUserId = userId; // Ensure user can't change ownership
+            _context.Entry(existingSkill).CurrentValues.SetValues(skill);
 
             try
             {
                 await _context.SaveChangesAsync();
                 
                 // Invalidate cache when data changes
-                _cache.Remove(SKILLS_CACHE_KEY);
-                _cache.Remove($"skill_{id}");
+                InvalidateUserCache(userId);
+                _cache.Remove($"skill_{id}_{userId}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -105,8 +136,14 @@ namespace SkillSnap.Api.Controllers
         }        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSkill(int id)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             var skill = await _context.Skills.FindAsync(id);
-            if (skill == null)
+            if (skill == null || skill.PortfolioUserId != userId)
             {
                 return NotFound();
             }
@@ -115,10 +152,15 @@ namespace SkillSnap.Api.Controllers
             await _context.SaveChangesAsync();
 
             // Invalidate cache when data changes
-            _cache.Remove(SKILLS_CACHE_KEY);
-            _cache.Remove($"skill_{id}");
+            InvalidateUserCache(userId);
+            _cache.Remove($"skill_{id}_{userId}");
 
             return NoContent();
+        }
+
+        private void InvalidateUserCache(int userId)
+        {
+            _cache.Remove($"{SKILLS_CACHE_KEY}_{userId}");
         }
 
         private bool SkillExists(int id)

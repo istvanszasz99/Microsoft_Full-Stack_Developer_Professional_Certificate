@@ -21,31 +21,42 @@ namespace SkillSnap.Api.Controllers
             _context = context;
             _cache = cache;
         }        [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
         {
-            // Try to get from cache first
-            if (_cache.TryGetValue(PROJECTS_CACHE_KEY, out List<Project>? cachedProjects))
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
             {
-                return cachedProjects!;
+                return Unauthorized();
             }
 
-            // If not in cache, get from database with optimized query
+            var cacheKey = $"{PROJECTS_CACHE_KEY}_{userId}";
+            
+            // Try to get from cache first
+            if (_cache.TryGetValue(cacheKey, out List<Project>? cachedProjects))
+            {
+                return cachedProjects!;
+            }            // If not in cache, get from database with optimized query (filter by user)
             var projects = await _context.Projects
                 .AsNoTracking() // Performance optimization for read-only queries
+                .Where(p => p.PortfolioUserId == userId) // Filter by current user
                 .OrderBy(p => p.Title) // Add consistent ordering
                 .ToListAsync();
 
             // Store in cache
-            _cache.Set(PROJECTS_CACHE_KEY, projects, _cacheExpiration);
+            _cache.Set(cacheKey, projects, _cacheExpiration);
 
             return projects;
         }        [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Project>> GetProject(int id)
         {
-            // Cache individual projects by ID
-            string cacheKey = $"project_{id}";
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            // Cache individual projects by ID and user
+            string cacheKey = $"project_{id}_{userId}";
             
             if (_cache.TryGetValue(cacheKey, out Project? cachedProject))
             {
@@ -54,7 +65,7 @@ namespace SkillSnap.Api.Controllers
 
             var project = await _context.Projects
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id && p.PortfolioUserId == userId);
 
             if (project == null)
             {
@@ -68,30 +79,52 @@ namespace SkillSnap.Api.Controllers
         }        [HttpPost]
         public async Task<ActionResult<Project>> AddProject(Project project)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            project.PortfolioUserId = userId; // Ensure the project belongs to the current user
+            
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
 
             // Invalidate cache when data changes
-            _cache.Remove(PROJECTS_CACHE_KEY);
+            InvalidateUserCache(userId);
 
             return CreatedAtAction("GetProject", new { id = project.Id }, project);
         }        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, Project project)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             if (id != project.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(project).State = EntityState.Modified;
+            // Ensure the project belongs to the current user
+            var existingProject = await _context.Projects.FindAsync(id);
+            if (existingProject == null || existingProject.PortfolioUserId != userId)
+            {
+                return NotFound();
+            }
+
+            project.PortfolioUserId = userId; // Ensure user can't change ownership
+            _context.Entry(existingProject).CurrentValues.SetValues(project);
 
             try
             {
                 await _context.SaveChangesAsync();
                 
                 // Invalidate cache when data changes
-                _cache.Remove(PROJECTS_CACHE_KEY);
-                _cache.Remove($"project_{id}");
+                InvalidateUserCache(userId);
+                _cache.Remove($"project_{id}_{userId}");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -109,8 +142,14 @@ namespace SkillSnap.Api.Controllers
         }        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
             var project = await _context.Projects.FindAsync(id);
-            if (project == null)
+            if (project == null || project.PortfolioUserId != userId)
             {
                 return NotFound();
             }
@@ -119,10 +158,15 @@ namespace SkillSnap.Api.Controllers
             await _context.SaveChangesAsync();
 
             // Invalidate cache when data changes
-            _cache.Remove(PROJECTS_CACHE_KEY);
-            _cache.Remove($"project_{id}");
+            InvalidateUserCache(userId);
+            _cache.Remove($"project_{id}_{userId}");
 
             return NoContent();
+        }
+
+        private void InvalidateUserCache(int userId)
+        {
+            _cache.Remove($"{PROJECTS_CACHE_KEY}_{userId}");
         }
 
         private bool ProjectExists(int id)
