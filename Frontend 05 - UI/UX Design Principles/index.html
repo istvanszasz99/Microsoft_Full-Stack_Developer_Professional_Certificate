@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Styles Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#about" title="Learn more about Alex">About Me</a></li>
+                <li><a href="#portfolio" title="View Alex's work">Portfolio</a></li>
+                <li><a href="#contact" title="Contact Alex">Contact</a></li>
+            </ul>
+        </nav>
+        <h1>Alex Styles</h1>
+        <p class="subtitle">Graphic Designer</p>
+    </header>
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Hello! I'm Alex Styles, a passionate graphic designer with a keen eye for detail and a love for creative problem-solving. I specialize in branding, digital illustration, and UI/UX design.</p>
+        </section>
+        <section id="portfolio">
+            <h2>Portfolio</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" tabindex="0">
+                    <img src="https://placehold.co/300x200?text=Project+1" alt="Project 1 Thumbnail">
+                    <button class="view-details" data-modal="modal1">View Details</button>
+                </div>
+                <div class="portfolio-item" tabindex="0">
+                    <img src="https://placehold.co/300x200?text=Project+2" alt="Project 2 Thumbnail">
+                    <button class="view-details" data-modal="modal2">View Details</button>
+                </div>
+                <div class="portfolio-item" tabindex="0">
+                    <img src="https://placehold.co/300x200?text=Project+3" alt="Project 3 Thumbnail">
+                    <button class="view-details" data-modal="modal3">View Details</button>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <form>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <!-- Modals for project details -->
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <span class="close" data-close="modal1">&times;</span>
+            <h3>Project 1</h3>
+            <p>Detailed description of Project 1 goes here.</p>
+        </div>
+    </div>
+    <div class="modal" id="modal2">
+        <div class="modal-content">
+            <span class="close" data-close="modal2">&times;</span>
+            <h3>Project 2</h3>
+            <p>Detailed description of Project 2 goes here.</p>
+        </div>
+    </div>
+    <div class="modal" id="modal3">
+        <div class="modal-content">
+            <span class="close" data-close="modal3">&times;</span>
+            <h3>Project 3</h3>
+            <p>Detailed description of Project 3 goes here.</p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Alex Styles. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
