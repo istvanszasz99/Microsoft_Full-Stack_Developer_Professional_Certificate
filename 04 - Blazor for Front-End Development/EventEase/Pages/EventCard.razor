@@ -1,0 +1,23 @@
+@* EventCard.razor *@
+
+<div class="event-card">
+    @if (string.IsNullOrWhiteSpace(EventName) || EventDate == default || string.IsNullOrWhiteSpace(EventLocation))
+    {
+        <div class="alert alert-warning">Invalid event data.</div>
+    }
+    else
+    {
+        <h3>@EventName</h3>
+        <p><strong>Date:</strong> @EventDate.ToShortDateString()</p>
+        <p><strong>Location:</strong> @EventLocation</p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? EventName { get; set; }
+    [Parameter]
+    public DateTime EventDate { get; set; }
+    [Parameter]
+    public string? EventLocation { get; set; }
+}

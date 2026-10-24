@@ -1,0 +1,156 @@
+@page "/eventdetails/{EventName}"
+
+@* Event Details Page *@
+
+@inject EventEase.Services.UserSessionService UserSession
+@inject EventEase.Services.AttendanceService AttendanceService
+
+<h2>Event Details</h2>
+<p><strong>Name:</strong> @EventName</p>
+<p><strong>Date:</strong> @EventDate.ToShortDateString()</p>
+<p><strong>Location:</strong> @EventLocation</p>
+
+<a href="/register/@EventName">Register for this event</a>
+
+@if (UserSession.IsLoggedIn)
+{
+    <button class="btn btn-success mt-2" @onclick="MarkAttendance" disabled="@AttendanceService.HasAttended(EventName ?? string.Empty, UserSession.UserEmail ?? string.Empty)">
+        @(AttendanceService.HasAttended(EventName ?? string.Empty, UserSession.UserEmail ?? string.Empty) ? "Attendance Marked" : "Mark Attendance")
+    </button>
+}
+
+@if (UserSession.IsLoggedIn)
+{
+    <h4 class="mt-4">Attendees:</h4>
+    <ul>
+        @foreach (var attendee in AttendanceService.GetAttendees(EventName ?? string.Empty))
+        {
+            <li>@attendee</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string? EventName { get; set; }
+    public DateTime EventDate { get; set; }
+    public string? EventLocation { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // Match all 20 events
+        if (EventName == "Corporate Gala")
+        {
+            EventDate = DateTime.Now.AddDays(10);
+            EventLocation = "Grand Hall";
+        }
+        else if (EventName == "Tech Conference")
+        {
+            EventDate = DateTime.Now.AddDays(20);
+            EventLocation = "Convention Center";
+        }
+        else if (EventName == "Holiday Party")
+        {
+            EventDate = DateTime.Now.AddDays(30);
+            EventLocation = "Downtown Venue";
+        }
+        else if (EventName == "Startup Pitch Night")
+        {
+            EventDate = DateTime.Now.AddDays(5);
+            EventLocation = "Innovation Hub";
+        }
+        else if (EventName == "Marketing Summit")
+        {
+            EventDate = DateTime.Now.AddDays(12);
+            EventLocation = "Skyline Center";
+        }
+        else if (EventName == "Leadership Workshop")
+        {
+            EventDate = DateTime.Now.AddDays(15);
+            EventLocation = "Executive Hall";
+        }
+        else if (EventName == "Annual Fundraiser")
+        {
+            EventDate = DateTime.Now.AddDays(18);
+            EventLocation = "Charity Ballroom";
+        }
+        else if (EventName == "Networking Mixer")
+        {
+            EventDate = DateTime.Now.AddDays(22);
+            EventLocation = "City Rooftop";
+        }
+        else if (EventName == "Product Launch")
+        {
+            EventDate = DateTime.Now.AddDays(25);
+            EventLocation = "Tech Park";
+        }
+        else if (EventName == "Team Building Retreat")
+        {
+            EventDate = DateTime.Now.AddDays(28);
+            EventLocation = "Lakeside Resort";
+        }
+        else if (EventName == "Customer Appreciation Day")
+        {
+            EventDate = DateTime.Now.AddDays(32);
+            EventLocation = "Main Plaza";
+        }
+        else if (EventName == "Board Meeting")
+        {
+            EventDate = DateTime.Now.AddDays(35);
+            EventLocation = "Conference Room A";
+        }
+        else if (EventName == "Sales Kickoff")
+        {
+            EventDate = DateTime.Now.AddDays(38);
+            EventLocation = "Downtown Office";
+        }
+        else if (EventName == "Charity Auction")
+        {
+            EventDate = DateTime.Now.AddDays(40);
+            EventLocation = "Art Gallery";
+        }
+        else if (EventName == "Developer Bootcamp")
+        {
+            EventDate = DateTime.Now.AddDays(42);
+            EventLocation = "Code Lab";
+        }
+        else if (EventName == "HR Seminar")
+        {
+            EventDate = DateTime.Now.AddDays(45);
+            EventLocation = "Training Center";
+        }
+        else if (EventName == "Finance Forum")
+        {
+            EventDate = DateTime.Now.AddDays(48);
+            EventLocation = "Business Suite";
+        }
+        else if (EventName == "Wellness Fair")
+        {
+            EventDate = DateTime.Now.AddDays(50);
+            EventLocation = "Community Hall";
+        }
+        else if (EventName == "Vendor Expo")
+        {
+            EventDate = DateTime.Now.AddDays(53);
+            EventLocation = "Exhibition Center";
+        }
+        else if (EventName == "End of Year Celebration")
+        {
+            EventDate = DateTime.Now.AddDays(60);
+            EventLocation = "Banquet Hall";
+        }
+        else
+        {
+            EventDate = DateTime.Now;
+            EventLocation = "TBD";
+        }
+    }
+
+    private void MarkAttendance()
+    {
+        if (UserSession.IsLoggedIn && EventName != null && UserSession.UserEmail != null)
+        {
+            AttendanceService.MarkAttendance(EventName, UserSession.UserEmail);
+        }
+    }
+}

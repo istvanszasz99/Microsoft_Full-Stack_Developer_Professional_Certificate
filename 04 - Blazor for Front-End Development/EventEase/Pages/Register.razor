@@ -1,0 +1,44 @@
+@page "/register/{EventName}"
+
+@using EventEase.Models
+@using Microsoft.AspNetCore.Components.Forms
+@inject EventEase.Services.UserSessionService UserSession
+
+<h2>Register for @EventName</h2>
+
+<EditForm Model="registration" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label for="name">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="registration.Name" />
+        <ValidationMessage For="@(() => registration.Name)" />
+    </div>
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="registration.Email" />
+        <ValidationMessage For="@(() => registration.Email)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</EditForm>
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success mt-3">@successMessage</div>
+}
+
+@code {
+    [Parameter]
+    public string? EventName { get; set; }
+
+    private RegistrationModel registration = new();
+    private string? successMessage;
+
+    private void HandleValidSubmit()
+    {
+        // Save registration data to session
+        UserSession.Register(registration.Name, registration.Email);
+        successMessage = $"Thank you, {registration.Name}, for registering for {EventName}!";
+        registration = new(); // Reset form
+    }
+}
