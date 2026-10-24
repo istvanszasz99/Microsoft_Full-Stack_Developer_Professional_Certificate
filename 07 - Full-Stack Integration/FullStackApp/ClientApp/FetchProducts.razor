@@ -1,0 +1,62 @@
+@page "/fetchproducts"
+
+<h3>Product List</h3>
+
+<ul>
+    @if (products == null)
+    {
+        <li>Loading...</li>
+    }
+    else if (products.Length == 0)
+    {
+        <li>No products found.</li>
+    }
+    else
+    {
+        foreach (var product in products)
+        {
+            <li>@product.Name - $@product.Price</li>
+        }
+    }
+</ul>
+
+@inject HttpClient Http
+@using System.Text.Json
+
+@code {
+    private Product[]? products;
+    private static Product[]? _cachedProducts;
+    private static DateTime _lastFetchTime;
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(2);
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Use in-memory cache to avoid redundant API calls
+        if (_cachedProducts != null && DateTime.Now - _lastFetchTime < CacheDuration)
+        {
+            products = _cachedProducts;
+            return;
+        }
+        try
+        {
+            var response = await Http.GetAsync("/api/productlist");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            products = JsonSerializer.Deserialize<Product[]>(json);
+            _cachedProducts = products;
+            _lastFetchTime = DateTime.Now;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public int Stock { get; set; }
+    }
+}
