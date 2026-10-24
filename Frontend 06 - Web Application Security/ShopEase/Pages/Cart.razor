@@ -1,0 +1,59 @@
+@page "/cart"
+@using ShopEase
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<h2>Shopping Cart</h2>
+
+@if (CartProducts.Count == 0)
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <ul>
+        @foreach (var product in CartProducts)
+        {
+            <li>@product.Name - $@product.Price <button @onclick="() => RemoveFromCart(product.ProductID)">Remove</button></li>
+        }
+    </ul>
+    <p>Total: $@Total</p>
+}
+
+@code {
+    private List<Product> CartProducts = new();
+    private decimal Total => CartProducts.Sum(p => p.Price);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var json = await JS.InvokeAsync<string>("localStorage.getItem", "cart");
+        if (!string.IsNullOrEmpty(json))
+        {
+            CartProducts = System.Text.Json.JsonSerializer.Deserialize<List<Product>>(json) ?? new();
+        }
+    }
+
+    public async void AddProduct(Product product)
+    {
+        CartProducts.Add(product);
+        await SaveCartAsync();
+    }
+
+    private async void RemoveFromCart(int productId)
+    {
+        var product = CartProducts.FirstOrDefault(p => p.ProductID == productId);
+        if (product != null)
+        {
+            CartProducts.Remove(product);
+            await SaveCartAsync();
+        }
+    }
+
+    private async Task SaveCartAsync()
+    {
+        var json = System.Text.Json.JsonSerializer.Serialize(CartProducts);
+        await JS.InvokeVoidAsync("localStorage.setItem", "cart", json);
+    }
+}
+
+@inject IJSRuntime JS

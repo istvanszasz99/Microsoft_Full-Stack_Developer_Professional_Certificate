@@ -1,0 +1,29 @@
+@page "/products"
+@using ShopEase
+@using ShopEase.Pages
+
+<h2>Products</h2>
+<div class="product-list">
+    @foreach (var product in productList)
+    {
+        <ProductCard Product="product" OnAddToCart="AddToCart" />
+    }
+</div>
+
+<Cart @ref="cartRef" />
+
+@code {
+    private List<Product> productList = new()
+    {
+        new Product(1, "Laptop", 999.99m, "Electronics"),
+        new Product(2, "Headphones", 199.99m, "Electronics"),
+        new Product(3, "Coffee Mug", 9.99m, "Home")
+    };
+
+    private Cart? cartRef;
+
+    private void AddToCart(Product product)
+    {
+        cartRef?.AddProduct(product);
+    }
+}
